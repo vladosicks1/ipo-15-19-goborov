@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: #f3f6fa;
+            padding: 60px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background-color: #f0f4f8;
+            font-weight: bold;
+        }
+        td img {
+            width: 60px;
+            border-radius: 4px;
+        }
+        form {
+            display: inline-block;
+        }
+        input[type="number"] {
+            width: 60px;
+            padding: 6px;
+        }
+        .btn {
+            padding: 6px 14px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background-color: #3e9143;
+        }
+        .remove-btn {
+            background-color: #e53935;
+        }
+        .remove-btn:hover {
+            background-color: #c62828;
+        }
+        .total {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .empty {
+            text-align: center;
+            font-size: 18px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Ваша корзина</h1>
+
+    {% if cart_items %}
+    <table>
+        <tr>
+            <th>Товар</th>
+            <th>Фото</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th>Сумма</th>
+            <th>Действия</th>
+        </tr>
+        {% for item in cart_items %}
+        <tr>
+            <td>{{ item.tovar.name }}</td>
+            <td><img src="{{ item.tovar.photo.url }}" alt="{{ item.tovar.name }}"></td>
+            <td>{{ item.tovar.price }} ₽</td>
+            <td>
+                <form method="post" action="{% url 'update_cart' item.id %}">
+                    {% csrf_token %}
+                    <input type="number" name="quantity" value="{{ item.kolvo }}" min="1" max="{{ item.tovar.kolvo }}">
+                    <button type="submit" class="btn">Обновить</button>
+                </form>
+            </td>
+            <td>{{ item.item_price }} ₽</td>
+            <td>
+                <form method="post" action="{% url 'remove_from_cart' item.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn remove-btn">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p class="total">Общая сумма: {{ total }} ₽</p>
+
+    {% else %}
+        <p class="empty">Ваша корзина пуста 🛒</p>
+    {% endif %}
+
+</body>
+</html>

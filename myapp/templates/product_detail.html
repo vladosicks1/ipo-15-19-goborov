@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.name }}</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: #eef2f7;
+            margin: 0;
+            padding: 60px;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            display: flex;
+            gap: 40px;
+        }
+        .image img {
+            width: 320px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .info h1 {
+            margin: 0 0 10px;
+            font-size: 28px;
+        }
+        .info p {
+            font-size: 17px;
+            line-height: 1.6;
+        }
+        .price {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #2e7d32;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #3e9143;
+        }
+        .meta {
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="image">
+            <img src="{{ product.photo.url }}" alt="{{ product.name }}">
+        </div>
+        <div class="info">
+            <h1>{{ product.name }}</h1>
+            <p>{{ product.description }}</p>
+            <p class="meta">
+                Категория: {{ product.category.name }}<br>
+                Производитель: {{ product.proizvod.name }} ({{ product.proizvod.country }})
+            </p>
+            <p class="price">{{ product.price }} руб.</p>
+            <a href="{% url 'add_to_cart' product.id %}" class="btn">Добавить в корзину</a>
+        </div>
+    </div>
+
+</body>
+</html>

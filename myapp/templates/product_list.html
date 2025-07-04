@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог товаров</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: url('/static/images/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 40px;
+            color: #333;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.75); /* затемнение */
+            z-index: -1;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 36px;
+            color: #2c3e50;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        input[type="text"], select {
+            padding: 10px;
+            font-size: 16px;
+            min-width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #43a047, #66bb6a);
+        }
+
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: white;
+            width: 250px;
+            border-radius: 8px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .card .info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .card .info h3 {
+            margin: 10px 0 5px;
+            font-size: 20px;
+        }
+
+        .card .info p {
+            margin: 0;
+            color: #555;
+        }
+
+        .card a.button {
+            display: inline-block;
+            margin: 15px auto;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+
+        .card a.button:hover {
+            background: linear-gradient(135deg, #3c9742, #66bb6a);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Каталог товаров</h1>
+
+    <form method="get">
+        <input type="text" name="q" placeholder="Поиск..." value="{{ search_query }}">
+        <select name="category">
+            <option value="">Категория</option>
+            {% for cat in categories %}
+                <option value="{{ cat.id }}" {% if cat.id|stringformat:"s" == selected_category %}selected{% endif %}>
+                    {{ cat.name }}
+                </option>
+            {% endfor %}
+        </select>
+        <select name="manufacturer">
+            <option value="">Производитель</option>
+            {% for man in manufacturers %}
+                <option value="{{ man.id }}" {% if man.id|stringformat:"s" == selected_manufacturer %}selected{% endif %}>
+                    {{ man.name }}
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit">Фильтровать</button>
+    </form>
+
+    <div class="products">
+        {% for product in products %}
+            <div class="card">
+                <img src="{{ product.photo.url }}" alt="{{ product.name }}">
+                <div class="info">
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.price }} руб.</p>
+                    <a href="{% url 'product_detail' product.id %}" class="button">Подробнее</a>
+                </div>
+            </div>
+        {% empty %}
+            <p>Нет товаров по заданным критериям.</p>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

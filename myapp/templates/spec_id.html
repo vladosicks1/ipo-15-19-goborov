@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Квалификация №{{ pk }}</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(to top right, #f5f9ff, #dbe5f1);
+            margin: 0;
+            padding: 60px;
+            color: #333;
+        }
+        .card {
+            background-color: #fff;
+            max-width: 600px;
+            margin: auto;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        h1 {
+            font-size: 26px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            margin: 8px 0;
+        }
+        .back-button {
+            margin-top: 30px;
+            padding: 10px 24px;
+            background-color: #4CAF50;
+            color: #fff;
+            border-radius: 6px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .back-button:hover {
+            background-color: #43a047;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        {% if error %}
+            <h1>Ошибка</h1>
+            <p>{{ error }}</p>
+        {% else %}
+            <h1>Квалификация №{{ number }}</h1>
+            <p><strong>Название:</strong> {{ title }}</p>
+        {% endif %}
+        <a href="{{ request.META.HTTP_REFERER|default:'/spec/' }}" class="back-button">← Назад</a>
+    </div>
+</body>
+</html>
